@@ -41,6 +41,10 @@ Add `yii2-users-module` to your config `module` section:
     ]
 ]
 ```
+Run module migration:
+```php
+php yii migrate migrationPath=@vova07/users/migrations
+```
 
 Usage
 -----
