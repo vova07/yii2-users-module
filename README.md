@@ -48,7 +48,8 @@ Usage
 Once the extension is installed, simply use it in your code by:
 
 ```php
-Yii::$app->getModule('users');```
+Yii::$app->getModule('users');
+```
 
 By default will be created one `superadmin` user with login `admin` and password `admin12345`.
 
