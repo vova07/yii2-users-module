@@ -10,6 +10,10 @@
             "email": "bazillio07@yandex.ru"
         }
     ],
+    "support": {
+        "issues": "https://github.com/vova07/yii2-users-module/issues?state=open",
+        "source": "https://github.com/vova07/yii2-users-module"
+    },
     "require": {
         "yiisoft/yii2": "*",
         "yiisoft/yii2-swiftmailer": "*",
