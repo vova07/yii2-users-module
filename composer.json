@@ -1,0 +1,27 @@
+{
+    "name": "vova07/yii2-users-module",
+    "description": "The users module for Yii framework.",
+    "type": "yii2-extension",
+    "keywords": ["yii2", "users", "module"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Crudu Vasile",
+            "email": "bazillio07@yandex.ru"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-swiftmailer": "*",
+        "vova07/yii2-rbac-module": "*",
+        "vova07/yii2-control-widget": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "vova07\\users\\": ""
+        }
+    },
+    "extra": {
+        "bootstrap": "vova07\\users\\Bootstrap"
+    }
+}
