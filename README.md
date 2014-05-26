@@ -24,7 +24,7 @@ to the require section of your `composer.json` file.
 Configuration
 -------------
 
-Add `yii2-users-module` to your config `module` section:
+Add `yii2-users-module` to `module` section:
 
 ```php
 'modules' => [
@@ -41,6 +41,17 @@ Add `yii2-users-module` to your config `module` section:
     ]
 ]
 ```
+
+Set `user` component section:
+
+```php
+'user' => [
+    'class' => 'yii\web\User',
+    'identityClass' => 'vova07\users\models\User',
+    'loginUrl' => ['/users/guest/login']
+]
+```
+
 Run module migration:
 ```php
 php yii migrate migrationPath=@vova07/users/migrations
