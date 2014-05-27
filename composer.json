@@ -17,6 +17,7 @@
     "require": {
         "yiisoft/yii2": "*",
         "yiisoft/yii2-swiftmailer": "*",
+        "yiisoft/yii2-bootstrap": "*",
         "vova07/yii2-rbac-module": "*",
         "vova07/yii2-control-widget": "*"
     },
