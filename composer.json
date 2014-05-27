@@ -2,7 +2,7 @@
     "name": "vova07/yii2-users-module",
     "description": "The users module for Yii framework.",
     "type": "yii2-extension",
-    "keywords": ["yii2", "users", "module"],
+    "keywords": ["yii2", "users", "user", "module"],
     "license": "BSD-3-Clause",
     "authors": [
         {
