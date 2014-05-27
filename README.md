@@ -24,15 +24,15 @@ to the require section of your `composer.json` file.
 Configuration
 -------------
 
-Add `yii2-users-module` to `module` section:
+Add `yii2-users-module` to `module` section of each application config:
 
 ```php
 'modules' => [
     'users' => [
         'class' => 'vova07\users\Module',
         'controllerNamespace' => 'vova07\users\controllers\backend', // For backend app. For frontend app just skip this param.
-        'requireEmailConfirmation' => false, // By default is true.
-        'robotEmail' => 'my@robot.email', // E-mail address from that will be sent all `users` mails.
+        'requireEmailConfirmation' => false, // By default is true. It mean that new user will need to confirm their email address.
+        'robotEmail' => 'my@robot.email', // E-mail address from that will be sent all `users` emails.
         'robotName' => 'My Robot Name', // By default is `Yii::$app->name . ' robot'`.
         'activationWithin' => 86400, // The time before a sent activation token becomes invalid.
         'recoveryWithin' => 14400, // The time before a sent recovery token becomes invalid.
@@ -42,7 +42,7 @@ Add `yii2-users-module` to `module` section:
 ]
 ```
 
-Set `user` component section:
+Add or edit `user` component section:
 
 ```php
 'user' => [
@@ -52,7 +52,22 @@ Set `user` component section:
 ]
 ```
 
+Add or edit `authManager` component section:
+
+```php
+'authManager' => [
+    'class' => 'yii\rbac\PhpManager',
+    'defaultRoles' => [
+        'user',
+        'admin',
+        'superadmin'
+    ],
+    'authFile' => '@vova07/rbac/data/rbac.php'
+]
+```
+
 Run module migration:
+
 ```php
 php yii migrate migrationPath=@vova07/users/migrations
 ```
@@ -72,7 +87,8 @@ After installation you'll be able to access below links (relative to your site d
 ### Frontend: ###
 - `/users/` - All users page
 - `/users/admin/` - Admin page
-- `/login/` - Login page
+- `/login/` - Log In page
+- `/logout/` - Log Out page
 - `/signup/` - Sign Up page
 - `/recovery/` - Password recovery page
 - `/resend/` - Resend email activation token
@@ -84,6 +100,8 @@ After installation you'll be able to access below links (relative to your site d
 
 ### Banckend ###
 You'll need to specify universal route `'<_m>/<_c>/<_a>' => '<_m>/<_c>/<_a>'` in your config file to access module actions.
+- `/users/guest/login/` - Log In page
+- `/users/user/logout/` - Log Out page
 - `/users/default/index/` - All users page
 - `/users/default/view/` - User page
 - `/users/default/create/` - Create new user page
@@ -93,7 +111,7 @@ You'll need to specify universal route `'<_m>/<_c>/<_a>' => '<_m>/<_c>/<_a>'` in
 
 Dependences
 -----------
-- yii2-control-widget
-- yii2-rbac-module
-- yii2-swiftmailer
-- yii2
+- [yii2-control-widget](https://github.com/vova07/yii2-control-widget)
+- [yii2-rbac-module](https://github.com/vova07/yii2-rbac-module)
+- [yii2-swiftmailer](https://github.com/yiisoft/yii2/tree/master/extensions/swiftmailer)
+- [yii2](https://github.com/yiisoft/yii2)
