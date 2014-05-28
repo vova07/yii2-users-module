@@ -69,7 +69,7 @@ Add or edit `authManager` component section:
 Run module migration:
 
 ```php
-php yii migrate migrationPath=@vova07/users/migrations
+php yii migrate --migrationPath=@vova07/users/migrations
 ```
 
 Usage
