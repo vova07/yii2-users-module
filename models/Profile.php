@@ -3,12 +3,7 @@
 namespace vova07\users\models;
 
 use Yii;
-use yii\base\ModelEvent;
-use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Security;
-use yii\web\IdentityInterface;
 use vova07\users\traits\ModuleTrait;
 
 /**
