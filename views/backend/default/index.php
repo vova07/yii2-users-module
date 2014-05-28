@@ -40,7 +40,7 @@ Pjax::begin();
                 'attribute' => 'username',
                 'format' => 'html',
                 'value' => function ($model) {
-                    return Html::a($model['username'], ['view', 'id' => $model['id']]);
+                    return Html::a($model['username'], ['view', 'id' => $model['id']], ['data-pjax' => 0]);
                 }
             ],
             [
