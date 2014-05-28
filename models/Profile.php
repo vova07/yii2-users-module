@@ -9,7 +9,6 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Security;
 use yii\web\IdentityInterface;
-use vova07\users\models\query\UserQuery;
 use vova07\users\traits\ModuleTrait;
 
 /**
