@@ -4,6 +4,8 @@
  * @var yii\base\View $this View
  * @var yii\widgets\ActiveForm $form Form
  * @var vova07\users\models\User $model Model
+ * @var array $roleArray Roles array
+ * @var array $statusArray Statuses array
  */
 
 use yii\helpers\Html;

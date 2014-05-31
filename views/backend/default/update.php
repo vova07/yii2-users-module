@@ -4,6 +4,8 @@
  * @var yii\base\View $this View
  * @var vova07\users\models\User $user User
  * @var vova07\users\models\User $profile Profile
+ * @var array $roleArray Roles array
+ * @var array $statusArray Statuses array
  */
 
 use yii\helpers\Html;

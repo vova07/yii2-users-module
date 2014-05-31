@@ -176,14 +176,16 @@ class DefaultController extends Controller
     /**
      * Find model by ID
      * @param integer|array $id User ID
-     * @return vova07\users\models\User User
+     * @return \vova07\users\models\backend\User User
      * @throws HttpException 404 error if user not found
      */
     protected function findModel($id)
     {
         if (is_array($id)) {
+             /** @var User $user */
             $model = User::findIdentities($id);
         } else {
+             /** @var User $user */
             $model = User::findIdentity($id);
         }
         if ($model !== null) {
