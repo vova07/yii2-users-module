@@ -3,10 +3,8 @@
 namespace vova07\users\models;
 
 use Yii;
-use yii\base\ModelEvent;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 use vova07\users\helpers\Security;
 use vova07\users\models\UserQuery;

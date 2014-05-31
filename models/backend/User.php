@@ -3,11 +3,8 @@
 namespace vova07\users\models\backend;
 
 use Yii;
-use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
-use vova07\users\models\Profile;
-use vova07\users\traits\ModuleTrait;
 
 /**
  * Class User
