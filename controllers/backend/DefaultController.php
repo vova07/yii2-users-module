@@ -3,11 +3,12 @@
 namespace vova07\users\controllers\backend;
 
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\HttpException;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 use vova07\users\models\backend\User;
 use vova07\users\models\backend\UserSearch;
 use vova07\users\models\Profile;
