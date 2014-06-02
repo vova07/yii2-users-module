@@ -98,7 +98,7 @@ After installation you'll be able to access below links (relative to your site d
 - `/my/settings/password/` - Password change page
 - `/my/settings/update/` - Profile update page
 
-### Banckend ###
+### Backend ###
 You'll need to specify universal route `'<_m>/<_c>/<_a>' => '<_m>/<_c>/<_a>'` in your config file to access module actions.
 - `/users/guest/login/` - Log In page
 - `/users/user/logout/` - Log Out page
