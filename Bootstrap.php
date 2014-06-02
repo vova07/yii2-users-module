@@ -22,7 +22,7 @@ class Bootstrap implements BootstrapInterface
             '<_a:email>' => 'users/default/<_a>',
             '<_m:users>/<username:[a-zA-Z0-9_-]{3,20}+>' => '<_m>/default/view',
             'my/settings/<_a:[\w\-]+>' => 'users/user/<_a>',
-        ]);
+        ], false);
 
         // Add module I18N category.
         $app->i18n->translations['users'] = [
