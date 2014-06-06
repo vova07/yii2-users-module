@@ -27,7 +27,7 @@ class Security extends \yii\helpers\Security
     public static function isValidToken($token, $duration)
     {
         $parts = explode('_', $token);
-        $timestamp = (int) end($parts);
+        $timestamp = (int)end($parts);
         return ($timestamp + $duration > time());
     }
 }

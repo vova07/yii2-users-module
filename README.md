@@ -30,7 +30,6 @@ Add `yii2-users-module` to `module` section of each application config:
 'modules' => [
     'users' => [
         'class' => 'vova07\users\Module',
-        'controllerNamespace' => 'vova07\users\controllers\backend', // For backend app. For frontend app just skip this param.
         'requireEmailConfirmation' => false, // By default is true. It mean that new user will need to confirm their email address.
         'robotEmail' => 'my@robot.email', // E-mail address from that will be sent all `users` emails.
         'robotName' => 'My Robot Name', // By default is `Yii::$app->name . ' robot'`.
@@ -48,7 +47,8 @@ Add or edit `user` component section:
 'user' => [
     'class' => 'yii\web\User',
     'identityClass' => 'vova07\users\models\User',
-    'loginUrl' => ['/users/guest/login']
+    'loginUrl' => ['/users/guest/login']  // For frontend app
+    // 'loginUrl' => ['/users/admin/login']  // For backend app
 ]
 ```
 
@@ -100,14 +100,14 @@ After installation you'll be able to access below links (relative to your site d
 
 ### Backend ###
 You'll need to specify universal route `'<_m>/<_c>/<_a>' => '<_m>/<_c>/<_a>'` in your config file to access module actions.
-- `/users/guest/login/` - Log In page
-- `/users/user/logout/` - Log Out page
-- `/users/default/index/` - All users page
-- `/users/default/view/` - User page
-- `/users/default/create/` - Create new user page
-- `/users/default/update/` - Update user page
-- `/users/default/delete/` - Delete one user
-- `/users/default/batch-delete/` - Delete more users
+- `/users/admin/login/` - Log In page
+- `/users/admin/logout/` - Log Out page
+- `/users/crud/index/` - All users page
+- `/users/crud/view/` - User page
+- `/users/crud/create/` - Create new user page
+- `/users/crud/update/` - Update user page
+- `/users/crud/delete/` - Delete one user
+- `/users/crud/batch-delete/` - Delete more users
 
 Dependences
 -----------

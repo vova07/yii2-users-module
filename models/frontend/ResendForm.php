@@ -2,10 +2,10 @@
 
 namespace vova07\users\models\frontend;
 
-use Yii;
-use yii\base\Model;
 use vova07\users\models\User;
 use vova07\users\traits\ModuleTrait;
+use yii\base\Model;
+use Yii;
 
 /**
  * Class ResendForm
@@ -13,6 +13,7 @@ use vova07\users\traits\ModuleTrait;
  * ResendForm is the model behind the resend form.
  *
  * @property string $email E-mail
+ * @property User $_model User model
  */
 class ResendForm extends Model
 {
@@ -24,7 +25,7 @@ class ResendForm extends Model
     public $email;
 
     /**
-     * @var vova07\users\models\User User instance
+     * @var User User instance
      */
     private $_model;
 
@@ -39,9 +40,14 @@ class ResendForm extends Model
             ['email', 'trim'],
             ['email', 'email'],
             ['email', 'string', 'max' => 100],
-            ['email', 'exist', 'targetClass' => User::className(), 'filter' => function($query) {
-                $query->inactive();
-            }]
+            [
+                'email',
+                'exist',
+                'targetClass' => User::className(),
+                'filter' => function ($query) {
+                        $query->inactive();
+                    }
+            ]
         ];
     }
 
@@ -77,9 +83,9 @@ class ResendForm extends Model
     public function send()
     {
         return $this->module->mail
-                    ->compose('signup', ['model' => $this->_model])
-                    ->setTo($this->email)
-                    ->setSubject(Yii::t('users', 'EMAIL_SUBJECT_SIGNUP') . ' ' . Yii::$app->name)
-                    ->send();
+            ->compose('signup', ['model' => $this->_model])
+            ->setTo($this->email)
+            ->setSubject(Yii::t('users', 'EMAIL_SUBJECT_SIGNUP') . ' ' . Yii::$app->name)
+            ->send();
     }
 }

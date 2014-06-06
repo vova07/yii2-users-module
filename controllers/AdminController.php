@@ -1,18 +1,18 @@
 <?php
 
-namespace vova07\users\controllers\backend;
+namespace vova07\users\controllers;
 
-use Yii;
+use vova07\users\models\LoginForm;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
-use vova07\users\models\LoginForm;
+use Yii;
 
 /**
- * Backend controller for guest users.
+ * Admin controller only for admin users.
  */
-class GuestController extends Controller
+class AdminController extends Controller
 {
     /**
      * @inheritdoc
@@ -24,8 +24,14 @@ class GuestController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
+                        'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?']
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@']
                     ]
                 ]
             ]
@@ -41,7 +47,7 @@ class GuestController extends Controller
             $this->goHome();
         }
 
-        $model = new LoginForm();
+        $model = new LoginForm(['scenario' => 'admin']);
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
@@ -54,8 +60,21 @@ class GuestController extends Controller
             }
         }
 
-        return $this->render('login', [
-            'model' => $model
-        ]);
+        return $this->render(
+            'login',
+            [
+                'model' => $model
+            ]
+        );
+    }
+
+    /**
+     * Logout user.
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 }

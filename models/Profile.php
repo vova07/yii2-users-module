@@ -2,9 +2,9 @@
 
 namespace vova07\users\models;
 
-use Yii;
-use yii\db\ActiveRecord;
 use vova07\users\traits\ModuleTrait;
+use yii\db\ActiveRecord;
+use Yii;
 
 /**
  * Class Profile
@@ -43,7 +43,6 @@ class Profile extends ActiveRecord
         return [
             // Name
             ['name', 'match', 'pattern' => '/^[a-zа-яё]+$/iu'],
-
             // Surname
             ['surname', 'match', 'pattern' => '/^[a-zа-яё]+(-[a-zа-яё]+)?$/iu']
         ];

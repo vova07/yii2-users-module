@@ -2,11 +2,11 @@
 
 namespace vova07\users\models\frontend;
 
-use Yii;
-use yii\base\Model;
 use vova07\users\helpers\Security;
 use vova07\users\models\User;
 use vova07\users\traits\ModuleTrait;
+use yii\base\Model;
+use Yii;
 
 /**
  * Class RecoveryConfirmationForm
@@ -37,7 +37,7 @@ class RecoveryConfirmationForm extends Model
     public $secure_key;
 
     /**
-     * @var vova07\users\models\User User instance
+     * @var User User instance
      */
     private $_user;
 
@@ -49,21 +49,22 @@ class RecoveryConfirmationForm extends Model
         return [
             // Required
             [['password', 'repassword', 'secure_key'], 'required'],
-
             // Trim
             [['password', 'repassword', 'secure_key'], 'trim'],
-
             // String
             [['password', 'repassword'], 'string', 'min' => 6, 'max' => 30],
             ['secure_key', 'string', 'max' => 53],
-
             // Repassword
             ['repassword', 'compare', 'compareAttribute' => 'password'],
-
             // Secure key
-            ['secure_key', 'exist', 'targetClass' => User::className(), 'filter' => function($query) {
-                $query->active();
-            }]
+            [
+                'secure_key',
+                'exist',
+                'targetClass' => User::className(),
+                'filter' => function ($query) {
+                        $query->active();
+                    }
+            ]
         ];
     }
 

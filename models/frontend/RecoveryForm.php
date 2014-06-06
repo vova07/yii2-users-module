@@ -2,10 +2,10 @@
 
 namespace vova07\users\models\frontend;
 
-use Yii;
-use yii\base\Model;
 use vova07\users\models\User;
 use vova07\users\traits\ModuleTrait;
+use yii\base\Model;
+use Yii;
 
 /**
  * Class RecoveryForm
@@ -24,7 +24,7 @@ class RecoveryForm extends Model
     public $email;
 
     /**
-     * @var vova07\users\models\User User instance
+     * @var User User instance
      */
     private $_model;
 
@@ -38,9 +38,14 @@ class RecoveryForm extends Model
             ['email', 'required'],
             ['email', 'trim'],
             ['email', 'string', 'max' => 100],
-            ['email', 'exist', 'targetClass' => User::className(), 'filter' => function($query) {
-                $query->active();
-            }]
+            [
+                'email',
+                'exist',
+                'targetClass' => User::className(),
+                'filter' => function ($query) {
+                        $query->active();
+                    }
+            ]
         ];
     }
 
@@ -76,9 +81,9 @@ class RecoveryForm extends Model
     public function send()
     {
         return $this->module->mail
-                    ->compose('recovery', ['model' => $this->_model])
-                    ->setTo($this->email)
-                    ->setSubject(Yii::t('users', 'EMAIL_SUBJECT_RECOVERY') . ' ' . Yii::$app->name)
-                    ->send();
+            ->compose('recovery', ['model' => $this->_model])
+            ->setTo($this->email)
+            ->setSubject(Yii::t('users', 'EMAIL_SUBJECT_RECOVERY') . ' ' . Yii::$app->name)
+            ->send();
     }
 }

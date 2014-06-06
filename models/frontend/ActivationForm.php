@@ -2,10 +2,10 @@
 
 namespace vova07\users\models\frontend;
 
-use Yii;
-use yii\base\Model;
 use vova07\users\models\User;
 use vova07\users\traits\ModuleTrait;
+use yii\base\Model;
+use Yii;
 
 /**
  * Class ActivationForm
@@ -33,9 +33,14 @@ class ActivationForm extends Model
             ['secure_key', 'required'],
             ['secure_key', 'trim'],
             ['secure_key', 'string', 'max' => 53],
-            ['secure_key', 'exist', 'targetClass' => User::className(), 'filter' => function($query) {
-                $query->inactive();
-            }]
+            [
+                'secure_key',
+                'exist',
+                'targetClass' => User::className(),
+                'filter' => function ($query) {
+                        $query->inactive();
+                    }
+            ]
         ];
     }
 
@@ -56,6 +61,7 @@ class ActivationForm extends Model
      */
     public function activation()
     {
+        /** @var User $model */
         $model = User::findBySecureKey($this->secure_key, 'inactive');
         if ($model !== null) {
             return $model->activation();

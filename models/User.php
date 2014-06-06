@@ -2,13 +2,13 @@
 
 namespace vova07\users\models;
 
-use Yii;
+use vova07\users\helpers\Security;
+use vova07\users\traits\ModuleTrait;
+use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-use vova07\users\helpers\Security;
-use vova07\users\models\UserQuery;
-use vova07\users\traits\ModuleTrait;
+use Yii;
 
 /**
  * Class User
@@ -46,29 +46,9 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
-        return [
-            'timestampBehavior' => [
-                'class' => TimestampBehavior::className(),
-            ]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return '{{%users}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function find()
-    {
-        return new UserQuery(get_called_class());
     }
 
     /**
@@ -91,6 +71,7 @@ class User extends ActiveRecord implements IdentityInterface
      * Find users by IDs
      *
      * @param array $id IDs array
+     * @param string|array|null $scope Query scope
      */
     public static function findIdentities($ids, $scope = null)
     {
@@ -108,8 +89,18 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
+
+    /**
      * Find model by username.
-     * @param string $username
+     *
+     * @param string $username Username
+     * * @param string|array|null $scope Query scope
      */
     public static function findByUsername($username, $scope = null)
     {
@@ -128,7 +119,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Find model by username.
-     * @param string $username
+     *
+     * @param string $username Username
+     * * @param string|array|null $scope Query scope
      */
     public static function findByEmail($email, $scope = null)
     {
@@ -147,7 +140,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Find model by secure key.
-     * @param string $secureKey
+     *
+     * @param string $secureKey Secure key
+     * * @param string|array|null $scope Query scope
      */
     public static function findBySecureKey($secureKey, $scope = null)
     {
@@ -167,6 +162,18 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+            'timestampBehavior' => [
+                'class' => TimestampBehavior::className(),
+            ]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getId()
     {
         return $this->id;
@@ -178,32 +185,6 @@ class User extends ActiveRecord implements IdentityInterface
     public function getAuthKey()
     {
         return $this->auth_key;
-    }
-
-    /**
-     * Generates password hash from password and sets it to the model.
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password_hash = Security::generatePasswordHash($password);
-    }
-
-    /**
-     * Generates "remember me" authentication key.
-     */
-    public function generateAuthKey()
-    {
-        $this->auth_key = Security::generateRandomKey();
-    }
-
-    /**
-     * Generates secure key.
-     */
-    public function generateSecureKey()
-    {
-        $this->secure_key = Security::generateExpiringRandomKey();
     }
 
     /**
@@ -284,6 +265,22 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Generates "remember me" authentication key.
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Security::generateRandomKey();
+    }
+
+    /**
+     * Generates secure key.
+     */
+    public function generateSecureKey()
+    {
+        $this->secure_key = Security::generateExpiringRandomKey();
+    }
+
+    /**
      * Activates user account.
      *
      * @return boolean true if account was successfully activated
@@ -306,6 +303,16 @@ class User extends ActiveRecord implements IdentityInterface
         $this->setPassword($password);
         $this->generateSecureKey();
         return $this->save(false);
+    }
+
+    /**
+     * Generates password hash from password and sets it to the model.
+     *
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password_hash = Security::generatePasswordHash($password);
     }
 
     /**

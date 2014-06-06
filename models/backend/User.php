@@ -3,7 +3,6 @@
 namespace vova07\users\models\backend;
 
 use Yii;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -32,11 +31,15 @@ class User extends \vova07\users\models\User
     private $_status;
 
     /**
-     * @return array Role array.
+     * @return string Model status.
      */
-    public static function getRoleArray()
+    public function getStatus()
     {
-        return ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name');
+        if ($this->_status === null) {
+            $statuses = self::getStatusArray();
+            $this->_status = $statuses[$this->status_id];
+        }
+        return $this->_status;
     }
 
     /**
@@ -52,18 +55,6 @@ class User extends \vova07\users\models\User
     }
 
     /**
-     * @return string Model status.
-     */
-    public function getStatus()
-    {
-        if ($this->_status === null) {
-            $statuses = self::getStatusArray();
-            $this->_status = $statuses[$this->status_id];
-        }
-        return $this->_status;
-    }
-
-    /**
      * @inheritdoc
      */
     public function rules()
@@ -72,33 +63,33 @@ class User extends \vova07\users\models\User
             // Required
             [['username', 'email'], 'required'],
             [['password', 'repassword'], 'required', 'on' => ['admin-create']],
-
             // Trim
             [['username', 'email', 'password', 'repassword', 'name', 'surname'], 'trim'],
-
             // String
             [['password', 'repassword'], 'string', 'min' => 6, 'max' => 30],
-
             // Unique
             [['username', 'email'], 'unique'],
-
             // Username
             ['username', 'match', 'pattern' => '/^[a-zA-Z0-9_-]+$/'],
             ['username', 'string', 'min' => 3, 'max' => 30],
-
             // E-mail
             ['email', 'string', 'max' => 100],
             ['email', 'email'],
-
             // Repassword
             ['repassword', 'compare', 'compareAttribute' => 'password'],
-
             // Role
             ['role', 'in', 'range' => array_keys(self::getRoleArray())],
-
             // Status
             ['status_id', 'in', 'range' => array_keys(self::getStatusArray())]
         ];
+    }
+
+    /**
+     * @return array Role array.
+     */
+    public static function getRoleArray()
+    {
+        return ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name');
     }
 
     /**
@@ -119,10 +110,13 @@ class User extends \vova07\users\models\User
     {
         $labels = parent::attributeLabels();
 
-        return array_merge($labels, [
-            'password' => Yii::t('users', 'ATTR_PASSWORD'),
-            'repassword' => Yii::t('users', 'ATTR_REPASSWORD')
-        ]);
+        return array_merge(
+            $labels,
+            [
+                'password' => Yii::t('users', 'ATTR_PASSWORD'),
+                'repassword' => Yii::t('users', 'ATTR_REPASSWORD')
+            ]
+        );
     }
 
     /**

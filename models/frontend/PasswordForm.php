@@ -2,10 +2,10 @@
 
 namespace vova07\users\models\frontend;
 
-use Yii;
-use yii\base\Model;
 use vova07\users\models\User;
 use vova07\users\traits\ModuleTrait;
+use yii\base\Model;
+use Yii;
 
 /**
  * Class PasswordForm
@@ -36,22 +36,9 @@ class PasswordForm extends Model
     public $oldpassword;
 
     /**
-     * @var vova07\users\models\User User instance
+     * @var User User instance
      */
     private $_user;
-
-    /**
-     * Finds user by id.
-     *
-     * @return User|null User instance
-     */
-    protected function getUser()
-    {
-        if ($this->_user === null) {
-            $this->_user = User::find()->where(['id' => Yii::$app->user->identity->id])->active()->one();
-        }
-        return $this->_user;
-    }
 
     /**
      * @inheritdoc
@@ -61,19 +48,14 @@ class PasswordForm extends Model
         return [
             // Required
             [['password', 'repassword', 'oldpassword'], 'required'],
-
             // Trim
             [['password', 'repassword', 'oldpassword'], 'trim'],
-
             // String
             [['password', 'repassword', 'oldpassword'], 'string', 'min' => 6, 'max' => 30],
-
             // Password
             ['password', 'compare', 'compareAttribute' => 'oldpassword', 'operator' => '!=='],
-
             // Repassword
             ['repassword', 'compare', 'compareAttribute' => 'password'],
-
             // Oldpassword
             ['oldpassword', 'validateOldPassword']
         ];
@@ -114,5 +96,18 @@ class PasswordForm extends Model
             return $model->password($this->password);
         }
         return false;
+    }
+
+    /**
+     * Finds user by id.
+     *
+     * @return User|null User instance
+     */
+    protected function getUser()
+    {
+        if ($this->_user === null) {
+            $this->_user = User::find()->where(['id' => Yii::$app->user->identity->id])->active()->one();
+        }
+        return $this->_user;
     }
 }

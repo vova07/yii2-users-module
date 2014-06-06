@@ -3,7 +3,6 @@
 namespace vova07\users;
 
 use Yii;
-use yii\base\InvalidConfigException;
 
 /**
  * Module [[Users]]
@@ -11,11 +10,6 @@ use yii\base\InvalidConfigException;
  */
 class Module extends \yii\base\Module
 {
-    /**
-     * @inheritdoc
-     */
-    public $controllerNamespace = 'vova07\users\controllers\frontend';
-
     /**
      * @var boolean If true after registration user will be required to confirm his e-mail address.
      */
@@ -66,38 +60,12 @@ class Module extends \yii\base\Module
     private $_isBackend;
 
     /**
-     * @var yii\swiftmailer\Mailer Mailer instance
+     * @var \yii\swiftmailer\Mailer Mailer instance
      */
     private $_mail;
 
     /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-
-        if ($this->isBackend === true) {
-            $this->setViewPath('@vova07/users/views/backend');
-        } else {
-            $this->setViewPath('@vova07/users/views/frontend');
-        }
-    }
-
-    /**
-     * Check if module is used for backend application.
-     * @return boolean true if it's used for backend application.
-     */
-    public function getIsBackend()
-    {
-        if ($this->_isBackend === null) {
-            $this->_isBackend = strpos($this->controllerNamespace, 'backend') === false ? false : true;
-        }
-        return $this->_isBackend;
-    }
-
-    /**
-     * @return yii\swiftmailer\Mailer Mailer instance with predefined templates.
+     * @return \yii\swiftmailer\Mailer Mailer instance with predefined templates.
      */
     public function getMail()
     {

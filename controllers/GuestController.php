@@ -1,24 +1,23 @@
 <?php
 
-namespace vova07\users\controllers\frontend;
+namespace vova07\users\controllers;
 
-use Yii;
-use yii\filters\AccessControl;
-use yii\helpers\Url;
-use yii\web\Controller;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 use vova07\users\models\frontend\ActivationForm;
-use vova07\users\models\frontend\Email;
 use vova07\users\models\frontend\RecoveryConfirmationForm;
 use vova07\users\models\frontend\RecoveryForm;
 use vova07\users\models\frontend\ResendForm;
 use vova07\users\models\frontend\User;
 use vova07\users\models\LoginForm;
 use vova07\users\models\Profile;
+use yii\filters\AccessControl;
+use yii\helpers\Url;
+use yii\web\Controller;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
+use Yii;
 
 /**
- * Frontend controller for guest users.
+ * Controller only for guest users.
  */
 class GuestController extends Controller
 {
@@ -41,7 +40,7 @@ class GuestController extends Controller
     }
 
     /**
-     * Create new record.
+     * Sign Up page.
      * If record will be successful created, user will be redirected to home page.
      */
     public function actionSignup()
@@ -54,12 +53,22 @@ class GuestController extends Controller
                 $user->populateRelation('profile', $profile);
                 if ($user->save(false)) {
                     if ($this->module->requireEmailConfirmation === true) {
-                        Yii::$app->session->setFlash('success', Yii::t('users', 'FRONTEND_FLASH_SUCCESS_SIGNUP_WITHOUT_LOGIN', [
-                            'url' => Url::toRoute('resend')
-                        ]));
+                        Yii::$app->session->setFlash(
+                            'success',
+                            Yii::t(
+                                'users',
+                                'FRONTEND_FLASH_SUCCESS_SIGNUP_WITHOUT_LOGIN',
+                                [
+                                    'url' => Url::toRoute('resend')
+                                ]
+                            )
+                        );
                     } else {
                         Yii::$app->user->login($user);
-                        Yii::$app->session->setFlash('success', Yii::t('users', 'FRONTEND_FLASH_SUCCESS_SIGNUP_WITH_LOGIN'));
+                        Yii::$app->session->setFlash(
+                            'success',
+                            Yii::t('users', 'FRONTEND_FLASH_SUCCESS_SIGNUP_WITH_LOGIN')
+                        );
                     }
                     return $this->goHome();
                 } else {
@@ -72,13 +81,17 @@ class GuestController extends Controller
             }
         }
 
-        return $this->render('signup', [
-            'user' => $user,
-            'profile' => $profile
-        ]);
+        return $this->render(
+            'signup',
+            [
+                'user' => $user,
+                'profile' => $profile
+            ]
+        );
     }
 
     /**
+     * Resend page.
      * Resend email confirmation token.
      */
     public function actionResend()
@@ -100,13 +113,16 @@ class GuestController extends Controller
             }
         }
 
-        return $this->render('resend', [
-            'model' => $model
-        ]);
+        return $this->render(
+            'resend',
+            [
+                'model' => $model
+            ]
+        );
     }
 
     /**
-     * Login user.
+     * Log In page.
      */
     public function actionLogin()
     {
@@ -127,13 +143,18 @@ class GuestController extends Controller
             }
         }
 
-        return $this->render('login', [
-            'model' => $model
-        ]);
+        return $this->render(
+            'login',
+            [
+                'model' => $model
+            ]
+        );
     }
 
     /**
+     * Activation page.
      * Activate a new user.
+     *
      * @param string $key Activation token.
      */
     public function actionActivation($key)
@@ -150,6 +171,7 @@ class GuestController extends Controller
     }
 
     /**
+     * Recovery page.
      * Request password recovery.
      */
     public function actionRecovery()
@@ -171,12 +193,16 @@ class GuestController extends Controller
             }
         }
 
-        return $this->render('recovery', [
-            'model' => $model
-        ]);
+        return $this->render(
+            'recovery',
+            [
+                'model' => $model
+            ]
+        );
     }
 
     /**
+     * Recovery confirmation page.
      * Confirm password recovery request.
      *
      * @param string $key Confirmation token
@@ -186,17 +212,26 @@ class GuestController extends Controller
         $model = new RecoveryConfirmationForm(['secure_key' => $key]);
 
         if (!$model->isValidSecureKey()) {
-            Yii::$app->session->setFlash('danger', Yii::t('users', 'FRONTEND_FLASH_FAIL_RECOVERY_CONFIRMATION_WITH_INVALID_KEY'));
+            Yii::$app->session->setFlash(
+                'danger',
+                Yii::t('users', 'FRONTEND_FLASH_FAIL_RECOVERY_CONFIRMATION_WITH_INVALID_KEY')
+            );
             return $this->goHome();
         }
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 if ($model->recovery()) {
-                    Yii::$app->session->setFlash('success', Yii::t('users', 'FRONTEND_FLASH_SUCCESS_RECOVERY_CONFIRMATION'));
+                    Yii::$app->session->setFlash(
+                        'success',
+                        Yii::t('users', 'FRONTEND_FLASH_SUCCESS_RECOVERY_CONFIRMATION')
+                    );
                     return $this->goHome();
                 } else {
-                    Yii::$app->session->setFlash('danger', Yii::t('users', 'FRONTEND_FLASH_FAIL_RECOVERY_CONFIRMATION'));
+                    Yii::$app->session->setFlash(
+                        'danger',
+                        Yii::t('users', 'FRONTEND_FLASH_FAIL_RECOVERY_CONFIRMATION')
+                    );
                     return $this->refresh();
                 }
             } elseif (Yii::$app->request->isAjax) {
@@ -205,9 +240,12 @@ class GuestController extends Controller
             }
         }
 
-        return $this->render('recovery-confirmation', [
-            'model' => $model
-        ]);
+        return $this->render(
+            'recovery-confirmation',
+            [
+                'model' => $model
+            ]
+        );
 
     }
 }

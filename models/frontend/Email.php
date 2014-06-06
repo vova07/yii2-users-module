@@ -2,11 +2,11 @@
 
 namespace vova07\users\models\frontend;
 
-use Yii;
-use yii\db\ActiveRecord;
 use vova07\users\helpers\Security;
 use vova07\users\models\User;
 use vova07\users\traits\ModuleTrait;
+use yii\db\ActiveRecord;
+use Yii;
 
 /**
  * Class Email
@@ -19,43 +19,35 @@ use vova07\users\traits\ModuleTrait;
  */
 class Email extends ActiveRecord
 {
-	use ModuleTrait;
+    use ModuleTrait;
 
-	/**
-	 * @var string Current e-mail address
-	 */
-	private $_oldemail;
-
-	/**
-	 * @var string Email model instance
-	 */
-	private $_model;
-
-	/**
-	 * @inheritdoc
-	 */
-	public static function tableName()
-	{
-		return '{{%user_email}}';
-	}
-
-	/**
-	 * @return string Current e-mail address
-	 */
-	public function getOldemail()
-	{
-		if ($this->_oldemail === null) {
-			$this->_oldemail = Yii::$app->user->identity->email;
-		}
-		return $this->_oldemail;
-	}
-
-	/**
-     * Generates secure key.
+    /**
+     * @var string Current e-mail address
      */
-    public function generateToken()
+    private $_oldemail;
+
+    /**
+     * @var Email model instance
+     */
+    private $_model;
+
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
     {
-        $this->token = Security::generateExpiringRandomKey();
+        return '{{%user_email}}';
+    }
+
+    /**
+     * @return string Current e-mail address
+     */
+    public function getOldemail()
+    {
+        if ($this->_oldemail === null) {
+            $this->_oldemail = Yii::$app->user->identity->email;
+        }
+        return $this->_oldemail;
     }
 
     /**
@@ -65,46 +57,46 @@ class Email extends ActiveRecord
      */
     public function isValidToken()
     {
-    	if (Security::isValidToken($this->token, $this->module->emailWithin) === true) {
-    		return ($this->_model = static::findOne(['token' => $this->token])) !== null;
-    	}
-    	return false;
+        if (Security::isValidToken($this->token, $this->module->emailWithin) === true) {
+            return ($this->_model = static::findOne(['token' => $this->token])) !== null;
+        }
+        return false;
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function rules()
-	{
-		return [
-			// E-mail
-			['email', 'required'],
-			['email', 'trim'],
-			['email', 'email'],
-			['email', 'string', 'max' => 100],
-			['email', 'compare', 'compareAttribute' => 'oldemail', 'operator' => '!=='],
-			['email', 'unique', 'targetClass' => User::className()],
-		];
-	}
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            // E-mail
+            ['email', 'required'],
+            ['email', 'trim'],
+            ['email', 'email'],
+            ['email', 'string', 'max' => 100],
+            ['email', 'compare', 'compareAttribute' => 'oldemail', 'operator' => '!=='],
+            ['email', 'unique', 'targetClass' => User::className()],
+        ];
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function attributeLabels()
-	{
-		return [
-			'email' => Yii::t('users', 'ATTR_NEW_EMAIL'),
-			'oldemail' => Yii::t('users', 'ATTR_OLDEMAIL'),
-		];
-	}
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'email' => Yii::t('users', 'ATTR_NEW_EMAIL'),
+            'oldemail' => Yii::t('users', 'ATTR_OLDEMAIL'),
+        ];
+    }
 
-	/**
-	 * @return vova07\users\models\User|null Related user
-	 */
-	public function getUser()
-	{
-		return $this->hasOne(User::className(), ['id' => 'user_id']);
-	}
+    /**
+     * @return User|null Related user
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
 
     /**
      * @inheritdoc
@@ -122,30 +114,38 @@ class Email extends ActiveRecord
         return false;
     }
 
-	/**
-	 * Confirm email change.
-	 *
-	 * @return boolean true if email was successfully confirmed.
-	 */
-	public function confirm()
-	{
-		$model = $this->_model;
-		$user = $model->user;
-		$user->email = $model->email;
-		return $user->save(false) && $model->delete();
-	}
+    /**
+     * Generates secure key.
+     */
+    public function generateToken()
+    {
+        $this->token = Security::generateExpiringRandomKey();
+    }
 
-	/**
+    /**
      * Send an email confirmation token.
      *
      * @return boolean true if email confirmation token was successfully sent
      */
     public function send()
     {
-    	return $this->module->mail
-    	            ->compose('email', ['model' => $this])
-    	            ->setTo($this->email)
-    	            ->setSubject(Yii::t('users', 'EMAIL_SUBJECT_CHANGE') . ' ' . Yii::$app->name)
-    	            ->send();
+        return $this->module->mail
+            ->compose('email', ['model' => $this])
+            ->setTo($this->email)
+            ->setSubject(Yii::t('users', 'EMAIL_SUBJECT_CHANGE') . ' ' . Yii::$app->name)
+            ->send();
+    }
+
+    /**
+     * Confirm email change.
+     *
+     * @return boolean true if email was successfully confirmed.
+     */
+    public function confirm()
+    {
+        $model = $this->_model;
+        $user = $model->user;
+        $user->email = $model->email;
+        return $user->save(false) && $model->delete();
     }
 }

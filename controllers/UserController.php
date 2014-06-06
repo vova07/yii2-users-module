@@ -1,15 +1,15 @@
 <?php
 
-namespace vova07\users\controllers\frontend;
+namespace vova07\users\controllers;
 
-use Yii;
+use vova07\users\models\frontend\Email;
+use vova07\users\models\frontend\PasswordForm;
+use vova07\users\models\Profile;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
-use vova07\users\models\frontend\Email;
-use vova07\users\models\frontend\PasswordForm;
-use vova07\users\models\Profile;
+use Yii;
 
 /**
  * Frontend controller for authenticated users.
@@ -35,7 +35,7 @@ class UserController extends Controller
     }
 
     /**
-     * Logout user.
+     * Log Out page.
      */
     public function actionLogout()
     {
@@ -45,7 +45,7 @@ class UserController extends Controller
     }
 
     /**
-     * Change user password.
+     * Change user password page.
      */
     public function actionPassword()
     {
@@ -66,13 +66,16 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('password', [
-            'model' => $model
-        ]);
+        return $this->render(
+            'password',
+            [
+                'model' => $model
+            ]
+        );
     }
 
     /**
-     * Request email change.
+     * Request email change page.
      */
     public function actionEmail()
     {
@@ -93,13 +96,16 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('email', [
-            'model' => $model
-        ]);
+        return $this->render(
+            'email',
+            [
+                'model' => $model
+            ]
+        );
     }
 
     /**
-     * User update
+     * User update page.
      */
     public function actionUpdate()
     {
@@ -119,8 +125,11 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('update', [
-            'model' => $model
-        ]);
+        return $this->render(
+            'update',
+            [
+                'model' => $model
+            ]
+        );
     }
 }

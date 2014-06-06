@@ -1,22 +1,22 @@
 <?php
 
-namespace vova07\users\controllers\backend;
+namespace vova07\users\controllers;
 
-use Yii;
+use vova07\users\models\backend\User;
+use vova07\users\models\backend\UserSearch;
+use vova07\users\models\Profile;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
-use vova07\users\models\backend\User;
-use vova07\users\models\backend\UserSearch;
-use vova07\users\models\Profile;
+use Yii;
 
 /**
- * Default backend controller.
+ * Admin CRUD controller.
  */
-class DefaultController extends Controller
+class CrudController extends Controller
 {
     /**
      * @inheritdoc
@@ -57,12 +57,15 @@ class DefaultController extends Controller
         $statusArray = User::getStatusArray();
         $roleArray = User::getRoleArray();
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'roleArray' => $roleArray,
-            'statusArray' => $statusArray
-        ]);
+        return $this->render(
+            'index',
+            [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'roleArray' => $roleArray,
+                'statusArray' => $statusArray
+            ]
+        );
     }
 
     /**
@@ -72,9 +75,12 @@ class DefaultController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return $this->render(
+            'view',
+            [
+                'model' => $this->findModel($id),
+            ]
+        );
     }
 
     /**
@@ -102,12 +108,15 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('create', [
-            'user' => $user,
-            'profile' => $profile,
-            'roleArray' => $roleArray,
-            'statusArray' => $statusArray
-        ]);
+        return $this->render(
+            'create',
+            [
+                'user' => $user,
+                'profile' => $profile,
+                'roleArray' => $roleArray,
+                'statusArray' => $statusArray
+            ]
+        );
     }
 
     /**
@@ -136,12 +145,15 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('update', [
-            'user' => $user,
-            'profile' => $profile,
-            'roleArray' => $roleArray,
-            'statusArray' => $statusArray
-        ]);
+        return $this->render(
+            'update',
+            [
+                'user' => $user,
+                'profile' => $profile,
+                'roleArray' => $roleArray,
+                'statusArray' => $statusArray
+            ]
+        );
     }
 
     /**
@@ -158,7 +170,7 @@ class DefaultController extends Controller
     /**
      * Delete multiple users.
      *
-     * @param array $ids Users ID array
+     * @throws HttpException 400 if $ids argument is null
      */
     public function actionBatchDelete()
     {
@@ -176,16 +188,16 @@ class DefaultController extends Controller
     /**
      * Find model by ID
      * @param integer|array $id User ID
-     * @return \vova07\users\models\backend\User User
+     * @return User User model
      * @throws HttpException 404 error if user not found
      */
     protected function findModel($id)
     {
         if (is_array($id)) {
-             /** @var User $user */
+            /** @var User $user */
             $model = User::findIdentities($id);
         } else {
-             /** @var User $user */
+            /** @var User $user */
             $model = User::findIdentity($id);
         }
         if ($model !== null) {

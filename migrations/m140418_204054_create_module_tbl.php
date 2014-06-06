@@ -1,8 +1,8 @@
 <?php
 
-use yii\db\Schema;
-use yii\db\Migration;
 use vova07\users\helpers\Security;
+use yii\db\Migration;
+use yii\db\Schema;
 
 /**
  * CLass m140418_204054_create_module_tbl
@@ -28,18 +28,22 @@ class m140418_204054_create_module_tbl extends Migration
         $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
 
         // Users table
-        $this->createTable('{{%users}}', [
-            'id' => Schema::TYPE_PK,
-            'username' => Schema::TYPE_STRING . '(30) NOT NULL',
-            'email' => Schema::TYPE_STRING . '(100) NOT NULL',
-            'password_hash' => Schema::TYPE_STRING . ' NOT NULL',
-            'auth_key' => Schema::TYPE_STRING . '(32) NOT NULL',
-            'secure_key' => Schema::TYPE_STRING . '(53) NOT NULL',
-            'role' => Schema::TYPE_STRING . '(64) NOT NULL DEFAULT "user"',
-            'status_id' => 'tinyint(4) NOT NULL DEFAULT 0',
-            'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL'
-        ], $tableOptions);
+        $this->createTable(
+            '{{%users}}',
+            [
+                'id' => Schema::TYPE_PK,
+                'username' => Schema::TYPE_STRING . '(30) NOT NULL',
+                'email' => Schema::TYPE_STRING . '(100) NOT NULL',
+                'password_hash' => Schema::TYPE_STRING . ' NOT NULL',
+                'auth_key' => Schema::TYPE_STRING . '(32) NOT NULL',
+                'secure_key' => Schema::TYPE_STRING . '(53) NOT NULL',
+                'role' => Schema::TYPE_STRING . '(64) NOT NULL DEFAULT "user"',
+                'status_id' => 'tinyint(4) NOT NULL DEFAULT 0',
+                'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
+                'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL'
+            ],
+            $tableOptions
+        );
 
         // Indexes
         $this->createIndex('username', '{{%users}}', 'username', true);
@@ -49,38 +53,45 @@ class m140418_204054_create_module_tbl extends Migration
         $this->createIndex('created_at', '{{%users}}', 'created_at');
 
         // Users table
-        $this->createTable('{{%profiles}}', [
-            'user_id' => Schema::TYPE_PK,
-            'name' => Schema::TYPE_STRING . '(50) NOT NULL',
-            'surname' => Schema::TYPE_STRING . '(50) NOT NULL'
-        ], $tableOptions);
+        $this->createTable(
+            '{{%profiles}}',
+            [
+                'user_id' => Schema::TYPE_PK,
+                'name' => Schema::TYPE_STRING . '(50) NOT NULL',
+                'surname' => Schema::TYPE_STRING . '(50) NOT NULL'
+            ],
+            $tableOptions
+        );
 
         // Foreign Keys
         $this->addForeignKey('FK_profile_user', '{{%profiles}}', 'user_id', '{{%users}}', 'id', 'CASCADE', 'CASCADE');
 
         // Users emails table
-        $this->createTable('{{%user_email}}', [
-            'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'email' => Schema::TYPE_STRING . '(100) NOT NULL',
-            'token' => Schema::TYPE_STRING . '(53) NOT NULL',
-            'PRIMARY KEY (`user_id`, `token`)'
-        ], $tableOptions);
+        $this->createTable(
+            '{{%user_email}}',
+            [
+                'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
+                'email' => Schema::TYPE_STRING . '(100) NOT NULL',
+                'token' => Schema::TYPE_STRING . '(53) NOT NULL',
+                'PRIMARY KEY (`user_id`, `token`)'
+            ],
+            $tableOptions
+        );
 
         // Foreign Keys
-        $this->addForeignKey('FK_user_email_user', '{{%user_email}}', 'user_id', '{{%users}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey(
+            'FK_user_email_user',
+            '{{%user_email}}',
+            'user_id',
+            '{{%users}}',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
 
         // Add super-administrator
         $this->execute($this->getUserSql());
         $this->execute($this->getProfileSql());
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function safeDown()
-    {
-        $this->dropTable('{{%user_email}}');
-        $this->dropTable('{{%users}}');
     }
 
     /**
@@ -101,5 +112,14 @@ class m140418_204054_create_module_tbl extends Migration
     private function getProfileSql()
     {
         return "INSERT INTO {{%profiles}} (`user_id`, `name`, `surname`) VALUES (1, 'Administration', 'Site')";
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function safeDown()
+    {
+        $this->dropTable('{{%user_email}}');
+        $this->dropTable('{{%users}}');
     }
 }

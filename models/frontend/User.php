@@ -34,24 +34,18 @@ class User extends \vova07\users\models\User
         return [
             // Required
             [['username', 'email', 'password', 'repassword'], 'required'],
-
             // Trim
             [['username', 'email', 'password', 'repassword'], 'trim'],
-
             // String
             [['password', 'repassword'], 'string', 'min' => 6, 'max' => 30],
-
             // Unique
             [['username', 'email'], 'unique'],
-
             // Username
             ['username', 'match', 'pattern' => '/^[a-zA-Z0-9_-]+$/'],
             ['username', 'string', 'min' => 3, 'max' => 30],
-
             // E-mail
             ['email', 'string', 'max' => 100],
             ['email', 'email'],
-
             // Repassword
             ['repassword', 'compare', 'compareAttribute' => 'password']
         ];
@@ -74,10 +68,13 @@ class User extends \vova07\users\models\User
     {
         $labels = parent::attributeLabels();
 
-        return array_merge($labels, [
-            'password' => Yii::t('users', 'ATTR_PASSWORD'),
-            'repassword' => Yii::t('users', 'ATTR_REPASSWORD')
-        ]);
+        return array_merge(
+            $labels,
+            [
+                'password' => Yii::t('users', 'ATTR_PASSWORD'),
+                'repassword' => Yii::t('users', 'ATTR_REPASSWORD')
+            ]
+        );
     }
 
     /**
@@ -119,9 +116,9 @@ class User extends \vova07\users\models\User
     public function send()
     {
         return $this->module->mail
-                    ->compose('signup', ['model' => $this])
-                    ->setTo($this->email)
-                    ->setSubject(Yii::t('users', 'EMAIL_SUBJECT_SIGNUP') . ' ' . Yii::$app->name)
-                    ->send();
+            ->compose('signup', ['model' => $this])
+            ->setTo($this->email)
+            ->setSubject(Yii::t('users', 'EMAIL_SUBJECT_SIGNUP') . ' ' . Yii::$app->name)
+            ->send();
     }
 }

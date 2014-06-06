@@ -2,10 +2,10 @@
 
 namespace vova07\users\models\backend;
 
-use Yii;
+use vova07\users\traits\ModuleTrait;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use vova07\users\traits\ModuleTrait;
+use Yii;
 
 /**
  * User search model.
@@ -58,10 +58,8 @@ class UserSearch extends Model
         return [
             // String
             [['name', 'surname', 'username', 'email'], 'string'],
-
             // Role
             ['role', 'in', 'range' => array_keys(User::getRoleArray())],
-
             // Status
             ['status_id', 'in', 'range' => array_keys(User::getStatusArray())]
         ];
@@ -69,8 +67,9 @@ class UserSearch extends Model
 
     /**
      * Search users by request criteria.
+     *
      * @param array|null Filter params
-     * @return yii\data\ActiveDataProvider Data provider with users
+     * @return ActiveDataProvider Data provider with users
      */
     public function search($params)
     {
@@ -98,7 +97,8 @@ class UserSearch extends Model
 
     /**
      * Add criteria condition.
-     * @param yii\db\Query $query Query instance.
+     *
+     * @param \yii\db\Query $query Query instance.
      * @param string $attribute Searched attribute name
      * @param boolean $partialMatch Matching type
      */
@@ -117,7 +117,8 @@ class UserSearch extends Model
 
     /**
      * Add inner join with criteria.
-     * @param yii\db\Query $query Query instance
+     *
+     * @param \yii\db\Query $query Query instance
      * @param string $attribute Serched attribute name
      * @param string $relation Relation name
      * @param string $targetAttribute Target attribute name
@@ -131,10 +132,10 @@ class UserSearch extends Model
         }
         if ($partialMatch) {
             $query->innerJoinWith([$relation])
-                  ->andWhere(['like', $targetAttribute, $value]);
+                ->andWhere(['like', $targetAttribute, $value]);
         } else {
             $query->innerJoinWith([$relation])
-                  ->andWhere([$targetAttribute => $value]);
+                ->andWhere([$targetAttribute => $value]);
         }
     }
 }
