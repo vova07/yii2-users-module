@@ -28,10 +28,12 @@ class Bootstrap implements BootstrapInterface
         );
 
         // Add module I18N category.
-        $app->i18n->translations['users'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@vova07/users/messages',
-            'forceTranslation' => true
-        ];
+        if (!isset($app->i18n->translations['users']) && !isset($app->i18n->translations['users*'])) {
+            $app->i18n->translations['users'] = [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => '@vova07/users/messages',
+                'forceTranslation' => true
+            ];
+        }
     }
 }
