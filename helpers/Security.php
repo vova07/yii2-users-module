@@ -2,11 +2,13 @@
 
 namespace vova07\users\helpers;
 
+use Yii;
+
 /**
  * Extended [[yii\helpers\Security|Security]] class.
  * @package vova07\users\helpers
  */
-class Security extends \yii\helpers\Security
+class Security
 {
     /**
      * Generate a random key with time suffix.
@@ -14,7 +16,7 @@ class Security extends \yii\helpers\Security
      */
     public static function generateExpiringRandomKey()
     {
-        return self::generateRandomKey() . '_' . time();
+        return Yii::$app->getSecurity()->generateRandomKey() . '_' . time();
     }
 
     /**

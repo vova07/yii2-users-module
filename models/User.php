@@ -70,8 +70,10 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Find users by IDs
      *
-     * @param array $id IDs array
-     * @param string|array|null $scope Query scope
+     * @param $ids IDs array
+     * @param null $scope Query scope
+     *
+     * @return array|\yii\db\ActiveRecord[]
      */
     public static function findIdentities($ids, $scope = null)
     {
@@ -204,7 +206,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Security::validatePassword($password, $this->password_hash);
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password_hash);
     }
 
     /**
@@ -269,7 +271,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generateAuthKey()
     {
-        $this->auth_key = Security::generateRandomKey();
+        $this->auth_key = Yii::$app->getSecurity()->generateRandomKey();
     }
 
     /**
@@ -312,7 +314,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password_hash = Security::generatePasswordHash($password);
+        $this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($password);
     }
 
     /**

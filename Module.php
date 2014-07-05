@@ -55,11 +55,6 @@ class Module extends \yii\base\Module
     public $adminRoles = ['superadmin', 'admin'];
 
     /**
-     * @var boolean Is module used for backend.
-     */
-    private $_isBackend;
-
-    /**
      * @var \yii\swiftmailer\Mailer Mailer instance
      */
     private $_mail;
@@ -70,7 +65,7 @@ class Module extends \yii\base\Module
     public function getMail()
     {
         if ($this->_mail === null) {
-            $this->_mail = Yii::$app->getMail();
+            $this->_mail = Yii::$app->getMailer();
             $this->_mail->htmlLayout = '@vova07/users/mails/layouts/html';
             $this->_mail->textLayout = '@vova07/users/mails/layouts/text';
             $this->_mail->viewPath = '@vova07/users/mails/views';
