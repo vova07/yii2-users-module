@@ -3,6 +3,7 @@
 use vova07\users\helpers\Security;
 use yii\db\Migration;
 use yii\db\Schema;
+use Yii;
 
 /**
  * CLass m140418_204054_create_module_tbl
@@ -100,8 +101,8 @@ class m140418_204054_create_module_tbl extends Migration
     private function getUserSql()
     {
         $time = time();
-        $password_hash = Security::generatePasswordHash('admin12345');
-        $auth_key = Security::generateRandomKey();
+        $password_hash = Yii::$app->security->generatePasswordHash('admin12345');
+        $auth_key = Yii::$app->security->generateRandomKey();
         $secure_key = Security::generateExpiringRandomKey();
         return "INSERT INTO {{%users}} (`username`, `email`, `password_hash`, `auth_key`, `secure_key`, `role`, `status_id`, `created_at`, `updated_at`) VALUES ('admin', 'admin@demo.com', '$password_hash', '$auth_key', '$secure_key', 'superadmin', 1, $time, $time)";
     }
