@@ -138,9 +138,9 @@ class User extends \vova07\users\models\User
     /**
      * @inheritdoc
      */
-    public function afterSave($insert)
+    public function afterSave($insert,$changedAttributes)
     {
-        parent::afterSave($insert);
+        parent::afterSave($insert,$changedAttributes);
 
         if ($this->profile !== null) {
             $this->profile->save(false);
