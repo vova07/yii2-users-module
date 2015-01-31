@@ -3,7 +3,6 @@
 use vova07\users\helpers\Security;
 use yii\db\Migration;
 use yii\db\Schema;
-use Yii;
 
 /**
  * CLass m140418_204054_create_module_tbl
