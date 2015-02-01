@@ -62,7 +62,9 @@ Add or edit `authManager` component section:
         'admin',
         'superadmin'
     ],
-    'authFile' => '@vova07/rbac/data/rbac.php'
+    'itemFile' => '@vova07/rbac/data/items.php',
+    'assignmentFile' => '@vova07/rbac/data/assignments.php',
+    'ruleFile' => '@vova07/rbac/data/rules.php',
 ]
 ```
 
